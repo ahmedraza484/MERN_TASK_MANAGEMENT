@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { errorMiddlerware } from "./src/middlewares/errorMiddleware.js";
+import userRoutes from "./src/routes/user.route.js";
 
 const app = express();
 dotenv.config({
@@ -18,5 +20,8 @@ app.use(
     origin: process.env.FRONTEND_URL,
   }),
 );
+app.use("/api/v1/user", userRoutes);
+
+app.use(errorMiddlerware);
 
 export default app;

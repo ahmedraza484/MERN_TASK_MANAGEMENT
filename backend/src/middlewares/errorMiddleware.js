@@ -8,12 +8,14 @@ class ApiError extends Error {
 }
 
 const errorMiddlerware = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal server error";
+  err.statusCode = err.statusCode || 500;
   const errorMessage = err.errors
-    ? Object.values(err.errors).map((error) => error.message)
+    ? Object.values(err.errors)
+        .map((error) => error.message)
+        .join(" ")
     : err.message;
-  res.statusCode(statusCode).json({
+  return res.status(err.statusCode).json({
     success: false,
     message: errorMessage,
   });
